@@ -1,0 +1,21 @@
+<h1><%= @post.title %></h1>
+<p><%= @post.content %></p>
+<p>created at: <%= @post.created_at %> By <%= @post.user.name %></p>
+<p>likes: <%= @post.likes.count %></p>
+<%= button_to "Like/unlike", post_do_like_path(@post), method: :get %>
+<hr>
+<% @post.comments.each do |comment| %>
+  <div>
+    <p>
+      <%= comment.content %> (<b><%= comment.user.name %></b>) created at <%= comment.created_at %>
+    </p>
+  </div>
+<% end %>
+
+<% if current_user %>
+  <%= form_with model: @post.comments.new, url: post_comments_path(@post) do |comment_form| %>
+    <%= comment_form.label 'content' %>
+    <%= comment_form.text_field :content %><br />
+    <%= comment_form.submit %>
+  <% end %>
+<% end %>
